@@ -11,6 +11,7 @@ yarn-error.log
 
 # Environment variables
 .env
+/server/.env
 
 # Build output
 /server/build
@@ -57,3 +58,6 @@ Thumbs.db
 /.vscode
 *.sublime-workspace
 *.sublime-project
+
+# planning 
+/index.txt
