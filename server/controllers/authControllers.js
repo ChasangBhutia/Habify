@@ -3,18 +3,19 @@ const userModel = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
 
 module.exports.createUser = async(req, res)=>{
-    const {fullname, email, password} = req.body;
-    if(!fullname || !email || !password) return res.status(400).json({success:false, error:"All fields are required."});
+    const {fullname, email, password, timezone} = req.body;
+    if(!fullname || !email || !password || !timezone) return res.status(400).json({success:false, error:"All fields are required."});
     try{
         let user = await userModel.findOne({email});
         if(user) return res.status(409).json({success:false, error:"User already exists! Please Login"});
-        const hash = bcrypt.hashSync(password, 10);
+        const hash = await bcrypt.hash(password, 10);
         let newUser = await userModel.create({
             fullname,
             email,
-            password:hash
+            password:hash,
+            timezone
         });
-        let token = generateToken(newUser.email, newUser._id);
+        let token = generateToken(newUser.email, newUser._id, newUser.timezone);
         res.cookie('token', token);
         return res.status(201).json({success:true, message:"User Created.", newUser});
     }catch(err){
@@ -31,7 +32,7 @@ module.exports.loginUser = async(req, res)=>{
         if(!user) return res.status(404).json({success:false, error:"User do not exist! Please Signup."});
         let result = await bcrypt.compare(password, user.password);
         if(!result) return res.status(400).json({success:false, error:"Password wrong!"});
-        let token = generateToken(user.email, user._id);
+        let token = generateToken(user.email, user._id, user.timezone);
         res.cookie('token', token);
         return res.status(200).json({success:true, message:"User Logged In.", user});
     }catch(err){

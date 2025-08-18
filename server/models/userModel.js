@@ -5,7 +5,6 @@ const userSchema = mongoose.Schema({
     email: String,
     password: String,
     image: String,
-    
     tasks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'task'
@@ -18,3 +17,5 @@ const userSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('user', userSchema);
+
+// const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
