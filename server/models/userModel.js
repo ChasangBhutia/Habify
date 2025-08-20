@@ -4,8 +4,11 @@ const userSchema = mongoose.Schema({
     fullname: String,
     email: String,
     password: String,
-    image: String,
-    tasks: [{
+    image: {
+        type: String,
+        default: 'https://res.cloudinary.com/dzjspl6ws/image/upload/v1754150232/defaultUserProfilePic_lx62o9.jpg'
+    },
+    collabTasks: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'task'
     }],
