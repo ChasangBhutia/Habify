@@ -7,7 +7,11 @@ const taskSchema = mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['single', 'group']
+        enum: ['Single', 'Group']
+    },
+    priority: {
+        type: String,
+        enum: ['High', 'Low', 'Med']
     },
     description: String,
     owner: {
@@ -18,9 +22,9 @@ const taskSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     }],
-    subTasks:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'subTask'
+    subTasks: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'subTask'
     }]
 });
 

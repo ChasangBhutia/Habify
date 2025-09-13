@@ -1,15 +1,15 @@
-import React from 'react'
-import Home from './Pages/Home'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from './Pages/Login';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
+          <Route path='/:section' element={<Home/>} />
+          <Route path='/login' element={<Login/>} />
+          <Route path='/task-manager/:taskId' element={<Home/>} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -8,6 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const habitRoutes = require('./routes/habitRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const toDoRoutes = require('./routes/toDoRoutes');
+const userRoutes = require('./routes/userRoutes');
 const createDailyHabits = require('./cron/dailyHabitCron');
 const createDailyHabitScore = require("./cron/dailyHabitScoreCron");
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/habits', habitRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/toDos', toDoRoutes);
+app.use('/api/users', userRoutes);
 
 app.listen(3000, () => {
     console.log("Server is running on PORT 3000");

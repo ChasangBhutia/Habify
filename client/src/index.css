@@ -1,6 +1,25 @@
 @import "tailwindcss";
 
 *{
-  box-sizing: border-box;
-  scroll-behavior: smooth;
+    scroll-behavior: smooth;
+    font-family: "Inter", sans-serif;
+}
+
+.poppins{
+    font-family: "Poppins", sans-serif;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+ 
+.container {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.271) 2px, transparent 0);
+  background-size: 40px 40px;
+  background-position: -5px -5px;
 }

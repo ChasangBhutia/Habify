@@ -8,16 +8,16 @@ const subTaskSchema = mongoose.Schema({
     },
     done: {
         type:Boolean,
-        defaut:false
+        default:false
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    assignees: [{
+    assignee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    }]
+    }
 });
 
 
