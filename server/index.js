@@ -9,8 +9,7 @@ const habitRoutes = require('./routes/habitRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const toDoRoutes = require('./routes/toDoRoutes');
 const userRoutes = require('./routes/userRoutes');
-const createDailyHabits = require('./cron/dailyHabitCron');
-const createDailyHabitScore = require("./cron/dailyHabitScoreCron");
+const weeklyCron = require("./cron/createWeeklyHabits");
 
 const app = express();
 
@@ -23,8 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 ConnectDB();
-createDailyHabits();
-createDailyHabitScore();
 
 app.use('/api/auth', authRoutes);
 app.use('/api/habits', habitRoutes);
@@ -34,4 +31,5 @@ app.use('/api/users', userRoutes);
 
 app.listen(3000, () => {
     console.log("Server is running on PORT 3000");
+    weeklyCron.start();
 });

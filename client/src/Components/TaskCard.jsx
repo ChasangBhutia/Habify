@@ -11,9 +11,9 @@ const TaskCard = ({ id, title, owner, description, priority, collaborators, type
 
     return (
         <Link to={`/task-manager/${id}`} className='no-underline text-inherit'>
-            <div className='bg-gray-700 text-white p-4 rounded-xl shadow-md w-full flex flex-col gap-3 mb-4 hover:scale-[1.05] transition-transform cursor-pointer'>
+            <div className='bg-white text-black p-4 rounded-xl shadow-md w-full flex flex-col gap-3 mb-4 hover:scale-[1.05] transition-transform cursor-pointer'>
                 <header className='flex justify-between items-center'>
-                    <h2 className='text-lg text-yellow-300 poppins'>{title.slice(0, 10)}...</h2>
+                    <h2 className='text-lg poppins'>{title.slice(0, 10)}...</h2>
                     <aside className='flex items-center gap-1'>
                         <p className={`${priorityBgColor} text-white px-1 rounded`}>{priority}</p>
                         <p className={`${typeBgColor} text-white px-1 rounded`}>{type}</p>
@@ -33,7 +33,7 @@ const TaskCard = ({ id, title, owner, description, priority, collaborators, type
                     </div>
                 </div>
                 <section className='border-b-2 border-gray-400 pb-3'>
-                    <p className='text-zinc-300 text-sm'>{description.length > 100 ? description.slice(0, 100) + '...' : description}</p>
+                    <p className='text-zinc-700 text-sm'>{description.length > 100 ? description.slice(0, 100) + '...' : description}</p>
                 </section>
                 <div className='flex gap-4 px-2'>
 

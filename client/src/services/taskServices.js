@@ -1,7 +1,6 @@
 import api from "./api";
 
 export const createTask = (taskData) => {
-    console.log(taskData)
     return api.post('/tasks/', taskData)
 }
 

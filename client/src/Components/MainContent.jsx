@@ -4,8 +4,9 @@ import HabitTracker from '../pages/Home/HabitTracker/HabitTracker';
 import CreateTaskForm from './CreateTaskForm';
 import { useTaskContext } from '../context/TaskContext';
 import TaskWorkspace from '../pages/Home/TaskManager/TaskWorkspace';
+import CreateHabitForm from './CreateHabitForm';
 
-const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen }) => {
+const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen, setIsHabitFormOpen, isHabitFormOpen }) => {
 
   const {fetchTask , selectedTask} = useTaskContext();
   useEffect(() => {
@@ -15,8 +16,8 @@ const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen }) => 
   },[taskId])
 
   return (
-    <div className="bg-transparent h-full w-full rounded-br-xl p-2">
-      <h1 className='fixed top-[50%] left-[51%] z-[1] tracking-wider text-7xl text-yellow-300 opacity-50 poppins'><span class="text-blue-400 poppins">Hab</span>ify</h1>
+    <div className="bg-transparent h-full w-full rounded-br-xl p-2 pb-0">
+      <h1 className='fixed top-[50%] left-[51%] z-[1] tracking-wider text-7xl text-yellow-300 opacity-50 poppins'><span className="text-blue-400 poppins">Hab</span>ify</h1>
 
       {taskId ? (
         selectedTask && <TaskWorkspace task={selectedTask}/>
@@ -30,6 +31,7 @@ const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen }) => 
 
       {/* Task form modal */}
       <CreateTaskForm isOpen={isTaskFormOpen} setIsOpen={setIsTaskFormOpen} />
+      <CreateHabitForm isOpen={isHabitFormOpen} setIsOpen={setIsHabitFormOpen}/>
     </div>
   );
 };

@@ -1,17 +1,25 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
+import ErrorBox from "./components/ErrorBox"
+import SuccessBox from "./components/SuccessBox"
+import { useAlertContext } from './context/AlertContext';
 
 const App = () => {
+
+  const { success, error } = useAlertContext();
+
   return (
     <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/:section' element={<Home/>} />
-          <Route path='/login' element={<Login/>} />
-          <Route path='/task-manager/:taskId' element={<Home/>} />
-        </Routes>
-      </BrowserRouter>
+      {error && <ErrorBox error={error} />}
+      {success && <SuccessBox success={success} />}
+
+      <Routes>
+        <Route path='/:section' element={<Home />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/task-manager/:taskId' element={<Home />} />
+      </Routes>
+
     </div>
   )
 }

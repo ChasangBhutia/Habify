@@ -3,9 +3,9 @@ import AddIcon from '@mui/icons-material/Add';
 
 const Collaborators = ({ collaborators, setIsOpen }) => {
     return (
-        <div className='h-1/2 bg-gray-700 text-white rounded p-3'>
+        <div className='h-1/2 bg-white text-black rounded p-3'>
             <header className='flex items-center justify-between mb-3 shadow-xl p-2'>
-                <h2 className='poppins text-yellow-300'>Collaorators</h2>
+                <h2 className='poppins'>Collaorators</h2>
                 <button className='flex items-center bg-blue-500 text-white rounded hover:scale-[1.2]' onClick={()=>setIsOpen(true)}><AddIcon/></button>
             </header>
             <div className='overflow-y-auto h-[80%] p-2'>

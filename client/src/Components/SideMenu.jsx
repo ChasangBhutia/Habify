@@ -10,7 +10,7 @@ const SideMenu = () => {
     const { user } = useAuthContext()
 
     return (
-        <nav className='bg-gray-700 text-white flex flex-col gap-3 h-full rounded-tl-xl rounded-bl-xl pt-3'>
+        <nav className='bg-white text-black flex flex-col gap-3 h-full rounded-tl-xl rounded-xl pt-3'>
             <h1 className='text-2xl ml-3'>Habify</h1>
 
             <p className='text-3xl ml-3'>Hello {user.fullname}, Lets do great today. 👋</p>

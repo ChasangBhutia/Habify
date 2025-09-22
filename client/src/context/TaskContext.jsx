@@ -1,18 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { createSubTask, createTask, getTask, markSubTask, addCollaborators } from "../services/taskServices";
 import { getAllTasks } from '../services/taskServices';
+import { useAlertContext } from "./AlertContext";
 
 const TaskContext = createContext();
 
 export const TaskProvider = ({ children }) => {
 
+    const { success, setSuccess, error, setError, refresh, setRefresh } = useAlertContext();
+
     const [tasks, setTasks] = useState([]);
     const [collabTasks, setCollabTasks] = useState([]);
-    const [success, setSuccess] = useState(null);
     const [selectedTask, setSelectedTask] = useState(null);
-    const [refresh, setRefresh] = useState(1);
-    const [error, setError] = useState(null);
-
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -34,11 +33,11 @@ export const TaskProvider = ({ children }) => {
             let response = await createTask(taskData);
             if (response.data.success) {
                 setSuccess(response.data.message);
-                setTimeout(()=>{
+                setTimeout(() => {
                     setSuccess(null);
-                },3000)
+                }, 3000)
             }
-            setRefresh(refresh + 1);
+            setRefresh(prev => prev + 1);
 
         } catch (err) {
             setError(err.response.data.error)
@@ -57,7 +56,12 @@ export const TaskProvider = ({ children }) => {
             } else {
                 setSelectedTask(null);
             }
+            setRefresh(prev => prev + 1);
         } catch (err) {
+            setError(err.message);
+            setTimeout(() => {
+                setError(null);
+            }, 3000)
             console.log(err.message);
             setSelectedTask(null);
         }
@@ -73,7 +77,7 @@ export const TaskProvider = ({ children }) => {
                 }, 3000)
             }
             fetchTask(taskId);
-            setRefresh(refresh + 1);
+            setRefresh(prev => prev + 1);
 
         } catch (err) {
             setError(err.response.data.error)
@@ -92,10 +96,10 @@ export const TaskProvider = ({ children }) => {
                 setTimeout(() => {
                     setSuccess(null);
                 }, 3000)
-                setRefresh(refresh + 1)
             }
+            setRefresh(prev => prev + 1)
             fetchTask(taskId);
-            
+
         } catch (err) {
             if (err.response) {
                 setError(err.response.data.error)
@@ -112,9 +116,9 @@ export const TaskProvider = ({ children }) => {
             let response = await addCollaborators(userId, taskId);
             if (response.data.success) {
                 setSuccess(response.data.message);
-                setTimeout(()=>{
+                setTimeout(() => {
                     setSuccess(null);
-                },3000)
+                }, 3000)
                 fetchTask(taskId);
             }
         } catch (err) {

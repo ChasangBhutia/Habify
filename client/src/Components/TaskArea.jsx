@@ -29,12 +29,12 @@ const TaskArea = ({ task, setIsOpen }) => {
     const typeBgColor = task.type === 'Single' ? 'bg-[#2196F3]' : 'bg-[#9C27B0]';
 
     return (
-        <div className='bg-gray-700 text-white h-full overflow-y-auto scrollbar-hide rounded p-3 pt-0 relative z-2'>
-            <header className='sticky bg-gray-700 top-0 z-50 flex gap-1 mb-3 pt-3'>
+        <div className='bg-white text-black h-full overflow-y-auto scrollbar-hide rounded p-3 pt-0 relative z-2'>
+            <header className='sticky bg-white top-0 z-50 flex gap-1 mb-3 pt-3'>
                 <h2 className='text-xl mr-auto poppins'>{task.title}</h2>
                 <p className={`${priorityBgColor} text-white px-2 py-1 rounded text-sm`}>{task.priority}</p>
                 <p className={`${typeBgColor} text-white px-2 py-1 rounded text-sm`}>{task.type}</p>
-                <button onClick={() => navigate(-1)} className='ml-4'>Back</button>
+                <button onClick={() => navigate(-1)} className='ml-4 hover:underline transition-all duration-300'>Back</button>
             </header>
 
             <section className='flex items-center gap-2 shadow-lg p-2 rounded'>
@@ -45,11 +45,11 @@ const TaskArea = ({ task, setIsOpen }) => {
 
             <section className='mt-4'>
                 <h3 className='mb-2 poppins'>Description</h3>
-                <p className='text-zinc-300'>{task.description}</p>
+                <p className='text-zinc-700'>{task.description}</p>
             </section>
 
             <section className='mt-5'>
-                <header className='flex items-center justify-between px-2 rounded shadow-lg shadow-zinc-600'>
+                <header className='flex items-center justify-between px-2 rounded shadow-lg'>
                     <h3 className='mt-2 mb-2 poppins'>Subtasks</h3>
                     <button className='bg-blue-500 text-white rounded hover:scale-[1.2]' onClick={() => setIsOpen(true)}><AddIcon /></button>
                 </header>
@@ -108,7 +108,7 @@ const TaskArea = ({ task, setIsOpen }) => {
 
                             </section>
                         );
-                    })): <p className='text-center text-zinc-300 text-3xl'>No tasks</p>}
+                    })): <p className='text-center text-zinc-500 text-3xl'>No tasks</p>}
 
                 </div>
             </section>

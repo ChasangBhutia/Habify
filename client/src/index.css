@@ -18,8 +18,8 @@
   scrollbar-width: none;
 }
  
-.container {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.271) 2px, transparent 0);
+.bgContainer {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.271) 2px, transparent 0);
   background-size: 40px 40px;
   background-position: -5px -5px;
 }

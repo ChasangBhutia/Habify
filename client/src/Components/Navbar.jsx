@@ -1,7 +1,7 @@
 import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
 
-const Navbar = ({ section, setIsTaskFormOpen }) => {
+const Navbar = ({ section, setIsTaskFormOpen, setIsHabitFormOpen }) => {
 
   const navHeading = section ? section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ') : 'Task Workspace';
 
@@ -16,13 +16,19 @@ const Navbar = ({ section, setIsTaskFormOpen }) => {
   const weekdayDate = fullDate; // Same as fullDate for simplicity
 
   return (
-    <nav className="w-full bg-gray-700 text-white h-full rounded-tr-xl flex items-center justify-between px-3">
-      <h1 className="text-xl text-yellow-300 poppins">{navHeading}</h1>
+    <nav className="w-full bg-white text-black h-full rounded-xl flex items-center justify-between px-3">
+      <h1 className="text-xl poppins">{navHeading}</h1>
       <div className="flex gap-5 items-center">
         {section === 'task-manager' && (
           <button className="bg-blue-500 p-2 text-white rounded hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsTaskFormOpen(true)}>
             <AddIcon />
             <p>Create Task</p>
+          </button>
+        )}
+         {section === 'habit-tracker' && (
+          <button className="bg-blue-500 p-2 text-white rounded hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsHabitFormOpen(true)}>
+            <AddIcon />
+            <p>Add Habit</p>
           </button>
         )}
         <div className="flex items-center gap-2">

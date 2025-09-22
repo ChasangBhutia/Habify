@@ -1,18 +1,28 @@
-module.exports.calculateScore = (allHabits)=>{
-    const habitCount = allHabits.length;
-    if(habitCount === 0) return 0;
-    const doneCount = allHabits.filter(h=>h.done).length;
-    if(doneCount === 0) return 0;
-    if(habitCount === doneCount) return 100;
-    return Number(((doneCount / habitCount) * 100).toFixed(1));
+module.exports.calculateTodaysScore = (allHabits) => {
+    let score = 0;
+    const doneHabits = allHabits.filter(habit => habit.done);
+    if (allHabits.length === 0) return 0;
+    score = Math.round((doneHabits.length / allHabits.length) * 100);
+    return score;
 }
 
+module.exports.calculateWeekScore = (weeks) => {
+    if (!weeks.length) return 0;
 
-module.exports.calculateColor = (score)=>{
-    if(score<=10) return '#033718ff';
-    else if(score<=30) return '#044b21ff';
-    else if(score<=50) return '#06672dff';
-    else if(score<=70) return '#06923E';
-    else if(score<=90) return '#06a043ff';
-    return '#11e365ff';
-}
+    let totalDone = 0;
+    const totalDays = weeks.length * 7; // 7 days per week
+
+    // Count done days directly
+    for (const week of weeks) {
+        for (const day of week.days) {
+            if (day.done) totalDone++;
+        }
+    }
+
+    // Calculate percentage
+    let percentage = (totalDone / totalDays) * 100;
+
+    // Round to 2 decimal places
+    return Math.round(percentage * 100) / 100;
+};
+
