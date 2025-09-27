@@ -1,52 +1,62 @@
 const cron = require('node-cron');
-const Habit = require('../models/habitModel');
-const Week = require('../models/habitWeekModel');
-const { startOfWeekMonday, endOfWeekSunday, buildWeekDaysArray } = require('../utils/date');
+const moment = require('moment-timezone');
+const userModel = require('../models/userModel');
+const habitScoreModel = require('../models/habitScoreModel');
+const habitModel = require('../models/habitModel');
+const habitWeekModel = require('../models/habitWeekModel');
+const { startOfWeekMonday, endOfWeekSunday, buildWeekDaysHabit, buildWeekDaysScore } = require('../utils/date');
 
-/**
- * Schedule:
- * '1 0 * * 1' -> At 00:01 on Monday.
- * Note: this uses the server's local timezone. If you deploy to a server in a different TZ,
- * adjust accordingly or use a more robust scheduler.
- */
+function createWeeklyHabit() {
+  // Run every 10 minutes
+  cron.schedule('*/10 * * * *', async () => {
+    console.log("⏰ Checking which users reached Monday 12:01 AM in their timezone…", new Date());
 
-function start() {
-  // schedule the job
-  cron.schedule('1 0 * * 1', async () => {
-    console.log('[cron] Creating weekly documents for all habits at', new Date());
     try {
-      const habits = await Habit.find().lean();
-      const start = startOfWeekMonday(new Date());
-      const end = endOfWeekSunday(start);
+      const users = await userModel.find({}).lean();
 
-      for (const habit of habits) {
-        // ensure unique creation with upsert-like check
-        const exists = await Week.findOne({ habitId: habit._id, startDate: start });
-        if (exists) continue;
+      for (const user of users) {
+        const tz = user.timezone || 'UTC'; // e.g. "Asia/Kolkata"
+        const nowLocal = moment.tz(tz);
 
-        const days = buildWeekDaysArray(start);
-        const week = new Week({
-          habitId: habit._id,
-          startDate: start,
-          endDate: end,
-          days
-        });
+        // ✅ If it's Monday 00:01 (within first 10 minutes)
+        if (nowLocal.day() === 1 && nowLocal.hour() === 0 && nowLocal.minute() < 10) {
+          console.log(`🌍 Creating weekly habits for user ${user._id} (${tz})`);
 
-        await week.save();
+          const startDate = startOfWeekMonday(nowLocal.toDate());
+          const endDate = endOfWeekSunday(startDate);
 
-        // push to habit.weeks
-        await Habit.findByIdAndUpdate(habit._id, { $push: { weeks: week._id } });
+          const existingScore = await habitScoreModel.findOne({ userId: user._id, startDate, endDate });
+          if (!existingScore) {
+            await habitScoreModel.create({
+              userId: user._id,
+              startDate,
+              endDate,
+              weekScore: 0,
+              dailyScore: buildWeekDaysScore(startDate),
+            });
+            console.log(`✅ Created weekly score for ${user._id}`);
+          }
+
+          const habits = await habitModel.find({ userId: user._id }).lean();
+          for (const habit of habits) {
+            const exists = await habitWeekModel.findOne({ userId: user._id, habitId: habit._id, startDate, endDate });
+            if (!exists) {
+              await habitWeekModel.create({
+                userId: user._id,
+                habitId: habit._id,
+                startDate,
+                endDate,
+                days: buildWeekDaysHabit(startDate),
+              });
+              console.log(`✅ Created weekly habit for ${user._id} (${habit._id})`);
+            }
+          }
+        }
       }
-
-      console.log('[cron] Weekly creation finished.');
     } catch (err) {
-      console.error('[cron] Error creating weekly documents:', err);
+      console.error(`❌ Error creating weekly habits: ${err.message}`);
     }
-  }, {
-    scheduled: true
   });
-
-  console.log('[cron] Weekly creator scheduled (Mon 00:01 server local time).');
 }
 
-module.exports = { start };
+module.exports = { createWeeklyHabit };

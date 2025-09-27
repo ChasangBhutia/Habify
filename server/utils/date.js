@@ -5,7 +5,7 @@ function normalizeToDay(date) {
 }
 
 // Example: build 7 days array starting from given start date (Monday)
-function buildWeekDaysArray(startDate) {
+function buildWeekDaysHabit(startDate) {
   const days = [];
   for (let i = 0; i < 7; i++) {
     const date = new Date(startDate);
@@ -14,6 +14,19 @@ function buildWeekDaysArray(startDate) {
       date: normalizeToDay(date),
       score: 0,
       done: false,
+    });
+  }
+  return days;
+}
+
+function buildWeekDaysScore(startDate) {
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(startDate);
+    date.setDate(startDate.getDate() + i);
+    days.push({
+      date: normalizeToDay(date),
+      score: 0,
     });
   }
   return days;
@@ -35,4 +48,4 @@ function endOfWeekSunday(start) {
   return d;
 }
 
-module.exports = { startOfWeekMonday, endOfWeekSunday, buildWeekDaysArray, normalizeToDay };
+module.exports = { startOfWeekMonday, endOfWeekSunday, buildWeekDaysHabit, normalizeToDay, buildWeekDaysScore };

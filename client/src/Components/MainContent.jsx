@@ -17,7 +17,7 @@ const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen, setIs
 
   return (
     <div className="bg-transparent h-full w-full rounded-br-xl p-2 pb-0">
-      <h1 className='fixed top-[50%] left-[51%] z-[1] tracking-wider text-7xl text-yellow-300 opacity-50 poppins'><span className="text-blue-400 poppins">Hab</span>ify</h1>
+      <h1 className='fixed top-[50%] left-[50%] z-[1] tracking-wider text-7xl text-yellow-300 opacity-50 poppins'><span className="text-blue-400 poppins">Hab</span>ify</h1>
 
       {taskId ? (
         selectedTask && <TaskWorkspace task={selectedTask}/>

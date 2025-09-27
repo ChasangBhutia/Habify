@@ -27,7 +27,13 @@ module.exports.createUser = async (req, res) => {
             timezone
         });
         let token = generateToken(newUser.email, newUser._id, newUser.timezone);
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/'
+        });
         return res.status(201).json({ success: true, message: "User Created.", newUser });
     } catch (err) {
         console.log(`Error Creating user: ${err.message}`);
@@ -44,7 +50,13 @@ module.exports.loginUser = async (req, res) => {
         let result = await bcrypt.compare(password, user.password);
         if (!result) return res.status(400).json({ success: false, error: "Password wrong!" });
         let token = generateToken(user.email, user._id, user.timezone);
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/'
+        });
         return res.status(200).json({ success: true, message: "User Logged In.", user });
     } catch (err) {
         console.log(`Error Logging: ${err.message}`);
@@ -53,6 +65,11 @@ module.exports.loginUser = async (req, res) => {
 }
 
 module.exports.logout = (req, res) => {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        path: "/"
+    });
     return res.status(200).json({ success: true, message: "Logged out." });
 };

@@ -46,7 +46,7 @@ const HabitTable = () => {
                                 </div>
 
                                 {/* Habit Days */}
-                                {habit.weeks[0].days.map((day, dayIndex) => (
+                                {habit?.weeks[0]?.days?.map((day, dayIndex) => (
                                     <div key={dayIndex} className="flex justify-center w-13 mx-3">
                                         <div
                                             style={{ backgroundColor: day.done ? habit.color : 'transparent', border: day.done ? `2px solid black`: `2px solid ${habit.color}` }}

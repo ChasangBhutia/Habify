@@ -1,7 +1,7 @@
 const habitModel = require('../models/habitModel');
 const weekModel = require('../models/habitWeekModel');
 const todayHabitModel = require('../models/todaysHabitModel');
-const { startOfWeekMonday, endOfWeekSunday, buildWeekDaysArray, normalizeToDay } = require('../utils/date');
+const { startOfWeekMonday, endOfWeekSunday, buildWeekDaysHabit, normalizeToDay } = require('../utils/date');
 const { calculateTodaysScore, calculateWeekScore } = require('../utils/calculateHabitScore');
 
 // Create Habit + initial week
@@ -31,7 +31,7 @@ module.exports.createHabit = async (req, res) => {
     // 3. Build initial week
     const start = startOfWeekMonday(new Date());
     const end = endOfWeekSunday(start);
-    const days = buildWeekDaysArray(start);
+    const days = buildWeekDaysHabit(start);
 
     const week = await weekModel.create({
       userId: req.user.id,
@@ -80,9 +80,10 @@ module.exports.markHabit = async (req, res) => {
   }
   try {
     const habit = await weekModel.findOne({ _id: weekId, habitId: habitId });
-    const todayHabit = await todayHabitModel.findOne({ userId: req.user.id, habitId: habitId, date: { $gte: new Date(new Date().setHours(0, 0, 0, 0)), $lte: new Date(new Date().setHours(23, 59, 59, 999)) } });
+    const todayHabit = await todayHabitModel.findOne({userId: req.user.id, habitId: habitId});
 
-    if (!habit) {
+
+    if (!habit || !todayHabit) {
       return res.status(404).json({ success: false, error: "Habit not found!" });
     }
     if (
@@ -95,7 +96,6 @@ module.exports.markHabit = async (req, res) => {
     await habit.save();
     todayHabit.done = habit.days[dayIndex].done;
     await todayHabit.save();
-
     return res.status(200).json({
       success: true,
       message: "Habit marked.",
@@ -110,17 +110,7 @@ module.exports.markHabit = async (req, res) => {
 module.exports.getTodayScore = async (req, res) => {
   try {
     // Normalize today’s start and end time
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
-
-    // Fetch today’s habits for the user
-    const todayHabits = await todayHabitModel.find({
-      userId: req.user.id,
-      date: { $gte: startOfDay, $lte: endOfDay }
-    });
+    const todayHabits = await todayHabitModel.find({userId: req.user.id});
 
     // Calculate today’s score
     const todayScore = calculateTodaysScore(todayHabits);
@@ -131,7 +121,7 @@ module.exports.getTodayScore = async (req, res) => {
     console.error(`Error fetching today's score: ${err.message}`);
     return res.status(500).json({ success: false, error: "Internal Server Error" });
   }
-};
+};;
 
 
 module.exports.getWeekScore = async (req, res) => {
@@ -167,7 +157,7 @@ module.exports.getWeekScore = async (req, res) => {
 //     let week = await Week.findOne({ habitId: habit._id, startDate: start });
 //     if (!week) {
 //       const end = endOfWeekSunday(start);
-//       const days = buildWeekDaysArray(start);
+//       const days = buildWeekDaysHabit(start);
 //       week = new Week({ habitId: habit._id, startDate: start, endDate: end, days });
 //       await week.save();
 

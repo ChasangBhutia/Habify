@@ -3,7 +3,10 @@ import AddIcon from '@mui/icons-material/Add';
 
 const Navbar = ({ section, setIsTaskFormOpen, setIsHabitFormOpen }) => {
 
-  const navHeading = section ? section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ') : 'Task Workspace';
+  let navHeading = section ? section.charAt(0).toUpperCase() + section.slice(1).replace('-', ' ') : 'Task Workspace';
+  if(navHeading === 'Ai') {
+    navHeading = 'HabifyPal';
+  }
 
   const date = new Date();
 

@@ -2,6 +2,7 @@ import React from 'react'
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import StackedLineChartIcon from '@mui/icons-material/StackedLineChart';
 import TaskIcon from '@mui/icons-material/Task';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import { Link } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 
@@ -32,6 +33,12 @@ const SideMenu = () => {
                     <li className='rounded hover:bg-blue-500 hover:text-white p-3 flex gap-5 cursor-pointer'>
                         <TaskIcon />
                         <p>Task Manager</p>
+                    </li>
+                </Link>
+                <Link to="/ai">
+                    <li className='rounded hover:bg-blue-500 hover:text-white p-3 flex gap-5 cursor-pointer'>
+                        <TipsAndUpdatesIcon />
+                        <p>HabifyPal</p>
                     </li>
                 </Link>
 
