@@ -9,13 +9,18 @@ const habitRoutes = require('./routes/habitRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const toDoRoutes = require('./routes/toDoRoutes');
 const userRoutes = require('./routes/userRoutes');
-const {createWeeklyHabit} = require("./cron/createWeeklyHabits");
-const {createDailyHabit} = require("./cron/createDailyHabit");
+const { createWeeklyHabit } = require("./cron/createWeeklyHabits");
+const { createDailyHabit } = require("./cron/createDailyHabit");
 
 const app = express();
 
+const allowedOrigin =
+    process.env.NODE_ENV === "production"
+        ? process.env.PROD_ORIGIN
+        : process.env.DEV_ORIGIN;
+
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: allowedOrigin,
     credentials: true
 }))
 app.use(express.json());
