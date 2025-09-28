@@ -8,7 +8,11 @@ import { useAuthContext } from '../context/AuthContext';
 
 const SideMenu = () => {
 
-    const { user } = useAuthContext()
+    const { user, logout } = useAuthContext()
+
+    function handleLogout(){
+        logout();
+    }
 
     return (
         <nav className='bg-white text-black flex flex-col gap-3 h-full rounded-tl-xl rounded-xl pt-3'>
@@ -52,6 +56,7 @@ const SideMenu = () => {
                     <p className='text-sm text-zinc-600'>{user.email}</p>
                     <p className='text-sm text-zinc-600'>Tire: pro</p>
                 </button>
+                <button className='poppins bg-gray-400 text-zinc-800 w-full h-12 hover:bg-gray-700 hover:text-white' onClick={handleLogout}>Logout</button>
             </div>
         </nav>
 

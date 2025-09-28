@@ -44,7 +44,7 @@ function startOfWeekMonday(date) {
 function endOfWeekSunday(start) {
   const d = new Date(start);
   d.setDate(start.getDate() + 6);
-  d.setHours(23, 59, 59, 999); // end of Sunday
+  d.setHours(0,0,0,0); // end of Sunday
   return d;
 }
 

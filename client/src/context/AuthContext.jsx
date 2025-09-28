@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { createUser, getUser, loginUser } from "../services/authServices";
+import { createUser, getUser, loginUser, logoutUser } from "../services/authServices";
 import { useAlertContext } from "./AlertContext";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
                     setSuccess(null);
                 }, 3000)
                 setRefresh(prev => prev + 1)
+                navigate('/habit-tracker')
             }
         } catch (err) {
             setError(err.message);
@@ -66,8 +67,28 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
+    const logout = async () =>{
+        try{
+            let response = await logoutUser();
+            if(response.data.success){
+                setSuccess(response.data.message);
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 3000)
+                setUser({});
+                navigate('/login')
+            }
+        }catch(err){
+            setError(err?.response?.data?.error || "Something went wrong");
+            setTimeout(() => {
+                setError(null);
+            }, 3000)
+            console.log(err.message);
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ user, registerUser, login }}>
+        <AuthContext.Provider value={{ user, registerUser, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

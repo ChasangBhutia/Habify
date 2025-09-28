@@ -5,6 +5,7 @@ import ErrorBox from './components/ErrorBox'
 import SuccessBox from "./components/SuccessBox"
 import { useAlertContext } from './context/AlertContext';
 import LandingPage from './pages/LandingPage';
+import Signup from './pages/Signup/Signup';
 
 const App = () => {
 
@@ -19,6 +20,7 @@ const App = () => {
         <Route path='/' element={<LandingPage />} />
         <Route path='/:section' element={<Home />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path='/task-manager/:taskId' element={<Home />} />
       </Routes>
 

@@ -50,10 +50,10 @@ module.exports.getTask = async (req, res) => {
             .populate('collaborators')
             .populate({
                 path: 'subTasks',
-                populate: { path: 'assignees' }
+                populate: { path: 'assignee' }
             });
         if (!task) return res.status(404).json({ success: false, error: "Task not found" });
-        return res.status(200).json({ success: true, message: "Task found", task });
+        return res.status(200).json({ success: true, message: "Task found", task});
     } catch (err) {
         console.log(`Error: ${err.message}`);
         return res.status(500).json({ success: false, error: "Something went wrong" });
@@ -91,15 +91,17 @@ module.exports.createSubTask = async (req, res) => {
     if (!title) return res.status(400).json({ success: false, error: "Title is required." });
     if (!taskId) return res.status(400).json({ success: false, error: "Task Id not found" });
     try {
+        const task = await taskModel.findById(taskId);
+        if (task.type==='Group' && !userId) return res.status(400).json({ success: false, error: "Please select a user to assign the task." });
         const subTask = await subTaskModel.create({
             title,
             owner: req.user.id,
             progress: 'not done'
         })
-        const task = await taskModel.findById(taskId);
         task.subTasks.push(subTask._id);
         await task.save();
-        if (userId) subTask.assignee = userId;
+        if(task.type==='Single') subTask.assignee = req.user.id;
+        else if(userId) subTask.assignee = userId;
         await subTask.save();
         return res.status(201).json({ success: true, message: "Sub Task created", subTask });
     } catch (err) {
@@ -149,8 +151,7 @@ module.exports.markSubTask = async (req, res) => {
     try {
         const subTask = await subTaskModel.findById(subTaskId);
         if (!subTask) return res.status(404).json({ success: false, error: "Sub task not found" });
-        let user = subTask.assignees.includes(req.user.id);
-        if (!user) return res.status(403).json({ success: false, error: "You are not assigned with the task." })
+        if (!subTask.assignee.equals(req.user.id)) return res.status(403).json({ success: false, error: "You are not assigned with the task." })
         subTask.progress = progress;
         if(progress === 'done') subTask.done = true;
         else subTask.done = false;

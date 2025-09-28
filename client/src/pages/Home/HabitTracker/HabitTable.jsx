@@ -7,12 +7,14 @@ import { fireSchoolPrideConfetti } from '../../../utils/confetti';
 const HabitTable = () => {
     const { habits, toggleHabit } = useHabitContext();
     const daysInWeek = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-    const day = new Date().getDay() - 1 ;
+    const day = new Date().getDay() ;
+    const adjustedDay = (day + 6) % 7;
+
 
     const { error, setError } = useAlertContext();
 
     const handleToggle = (e, dayIndex, habitId, weekId) => {
-        if (day === dayIndex) {
+        if (adjustedDay === dayIndex) {
             toggleHabit(habitId, dayIndex, 0, weekId);
             fireSchoolPrideConfetti(e, ["#0033A0", "#FFD700"]);
         } else {
@@ -63,7 +65,9 @@ const HabitTable = () => {
                 <div>
                     <h3 className="font-seibold mb-7">Score</h3>
                     {habits.map(habit => (
-                        <p className=' w-8 h-8 my-2 flex items-center' key={habit._id}>7/7</p>
+                        <p className=' w-8 h-8 my-2 flex items-center' key={habit._id}>
+                            {habit.weeks[0].days.reduce((total, day) => total + (day.done ? 1 : 0), 0)}/{habit.weeks[0].days.length}
+                        </p>
                     ))}
                 </div>
             </div>

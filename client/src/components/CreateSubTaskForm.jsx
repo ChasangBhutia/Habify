@@ -73,18 +73,20 @@ const CreateSubTaskForm = ({ task, isOpen, setIsOpen }) => {
                         />
                     </div>
 
-                    <div className='flex flex-col gap-2 my-2'>
-                        <label className="block text-gray-700 mb-1">Assign User: </label>
-                        <select value={subTaskData.userId} defaultValue="" className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" name='userId' onChange={handleChange}>
-                            <option value="" disabled>Select a User</option>
-                            {task.collaborators?.length > 0 ? (
-                                task?.collaborators.map(c => (
-                                    <option key={c._id} value={c._id}>{c.fullname}</option>
-                                ))) : (
-                                <option value="" disabled>No collaborators</option>
-                            )}
-                        </select>
-                    </div>
+                    {task.type === 'Group' &&
+                        <div className='flex flex-col gap-2 my-2'>
+                            <label className="block text-gray-700 mb-1">Assign User: </label>
+                            <select value={subTaskData.userId} defaultValue="" className="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" name='userId' onChange={handleChange}>
+                                <option value="" disabled>Select a User</option>
+                                {task.collaborators?.length > 0 ? (
+                                    task?.collaborators.map(c => (
+                                        <option key={c._id} value={c._id}>{c.fullname}</option>
+                                    ))) : (
+                                    <option value="" disabled>No collaborators</option>
+                                )}
+                            </select>
+                        </div>
+                    }
                     <button
                         type="submit"
                         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
