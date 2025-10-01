@@ -5,6 +5,7 @@ import CreateTaskForm from './CreateTaskForm';
 import { useTaskContext } from '../context/TaskContext';
 import TaskWorkspace from '../pages/Home/TaskManager/TaskWorkspace';
 import CreateHabitForm from './CreateHabitForm';
+import SubTaskInputForm from './SubTaskInputForm';
 
 const MainContent = ({ section, taskId, isTaskFormOpen, setIsTaskFormOpen, setIsHabitFormOpen, isHabitFormOpen }) => {
 

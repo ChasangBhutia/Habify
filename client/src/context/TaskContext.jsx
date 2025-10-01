@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { createSubTask, createTask, getTask, markSubTask, addCollaborators } from "../services/taskServices";
+import { createSubTask, createTask, getTask, markSubTask, addCollaborators, addComment, addFile } from "../services/taskServices";
 import { getAllTasks } from '../services/taskServices';
 import { useAlertContext } from "./AlertContext";
 
@@ -130,8 +130,45 @@ export const TaskProvider = ({ children }) => {
         }
     }
 
+    const addNewComment = async (subTaskId, comment) => {
+        try {
+            let response = await addComment(subTaskId, comment);
+            if (response.data.success) {
+                setSuccess(response.data.message);
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 3000)
+            }
+        } catch (err) {
+            console.error(err.message);
+            setError(err.response.data.error)
+            setTimeout(() => {
+                setError(null);
+            }, 3000)
+            console.error(`Error adding collaborators: ${err.message}`);
+        }
+    }
+
+    const uploadFile = async (subTaskId, formData) => {
+        try {
+            let response = await addFile(subTaskId, formData);
+            if (response.data.success) {
+                setSuccess(response.data.message);
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 3000)
+            }
+        } catch (err) {
+            console.error(err.message);
+            setError(err.response.data.error);
+            setTimeout(() => {
+                setError(null);
+            }, 3000)
+        }
+    }
+
     return (
-        <TaskContext.Provider value={{ success, createNewSubTask, tasks, addCollabInTask, error, fetchTask, selectedTask, changeSubTaskProgress, createNewTask, collabTasks }}>
+        <TaskContext.Provider value={{ uploadFile, addNewComment, success, createNewSubTask, tasks, addCollabInTask, error, fetchTask, selectedTask, changeSubTaskProgress, createNewTask, collabTasks }}>
             {children}
         </TaskContext.Provider>
     )

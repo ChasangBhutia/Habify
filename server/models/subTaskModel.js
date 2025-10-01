@@ -17,7 +17,19 @@ const subTaskSchema = mongoose.Schema({
     assignee: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    }
+    },
+    comments:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'taskComment'
+        }
+    ],
+    files:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'taskFile'
+        }
+    ]
 });
 
 

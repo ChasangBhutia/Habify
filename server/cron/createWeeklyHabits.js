@@ -15,10 +15,10 @@ function createWeeklyHabit() {
       const users = await userModel.find({}).lean();
 
       for (const user of users) {
-        const tz = user.timezone || 'UTC'; // e.g. "Asia/Kolkata"
+        const tz = user.timezone || 'UTC';
         const nowLocal = moment.tz(tz);
 
-        // ✅ If it's Monday 00:01 (within first 10 minutes)
+        
         if (nowLocal.day() === 1 && nowLocal.hour() === 0 && nowLocal.minute() < 10) {
           console.log(`🌍 Creating weekly habits for user ${user._id} (${tz})`);
 

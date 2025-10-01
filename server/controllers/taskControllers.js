@@ -1,5 +1,7 @@
 const sendMessage = require("../config/nodemailer");
 const subTaskModel = require("../models/subTaskModel");
+const taskCommentModel = require("../models/taskCommentModel");
+const taskFileModel = require("../models/taskFileModel");
 const taskModel = require("../models/taskModel");
 const userModel = require("../models/userModel");
 
@@ -53,7 +55,7 @@ module.exports.getTask = async (req, res) => {
                 populate: { path: 'assignee' }
             });
         if (!task) return res.status(404).json({ success: false, error: "Task not found" });
-        return res.status(200).json({ success: true, message: "Task found", task});
+        return res.status(200).json({ success: true, message: "Task found", task });
     } catch (err) {
         console.log(`Error: ${err.message}`);
         return res.status(500).json({ success: false, error: "Something went wrong" });
@@ -66,7 +68,7 @@ module.exports.addCollaborators = async (req, res) => {
     const { userId } = req.body;
     if (!taskId) return res.status(404).json({ success: false, error: "Task id not found" });
     if (!userId) return res.status(404).json({ success: false, error: "User id not found" });
-    if(userId === req.user.id) return res.status(400).json({success:false, error: "You cannot add your self in the team."});
+    if (userId === req.user.id) return res.status(400).json({ success: false, error: "You cannot add your self in the team." });
     try {
         const task = await taskModel.findById(taskId);
         if (!task) return res.status(404).json({ success: false, error: "Task not found!" });
@@ -92,7 +94,7 @@ module.exports.createSubTask = async (req, res) => {
     if (!taskId) return res.status(400).json({ success: false, error: "Task Id not found" });
     try {
         const task = await taskModel.findById(taskId);
-        if (task.type==='Group' && !userId) return res.status(400).json({ success: false, error: "Please select a user to assign the task." });
+        if (task.type === 'Group' && !userId) return res.status(400).json({ success: false, error: "Please select a user to assign the task." });
         const subTask = await subTaskModel.create({
             title,
             owner: req.user.id,
@@ -100,8 +102,8 @@ module.exports.createSubTask = async (req, res) => {
         })
         task.subTasks.push(subTask._id);
         await task.save();
-        if(task.type==='Single') subTask.assignee = req.user.id;
-        else if(userId) subTask.assignee = userId;
+        if (task.type === 'Single') subTask.assignee = req.user.id;
+        else if (userId) subTask.assignee = userId;
         await subTask.save();
         return res.status(201).json({ success: true, message: "Sub Task created", subTask });
     } catch (err) {
@@ -153,7 +155,7 @@ module.exports.markSubTask = async (req, res) => {
         if (!subTask) return res.status(404).json({ success: false, error: "Sub task not found" });
         if (!subTask.assignee.equals(req.user.id)) return res.status(403).json({ success: false, error: "You are not assigned with the task." })
         subTask.progress = progress;
-        if(progress === 'done') subTask.done = true;
+        if (progress === 'done') subTask.done = true;
         else subTask.done = false;
         await subTask.save();
         return res.status(200).json({ success: true, message: "Successfully marked subtask." });
@@ -177,5 +179,53 @@ module.exports.searchUserForCollab = async (req, res) => {
     } catch (err) {
         console.error(`Error: ${err.message}`);
         return res.status(500).json({ success: false, error: "Something went wrong" });
+    }
+}
+
+// Add Comments to task
+module.exports.addComment = async (req, res) => {
+    const {subTaskId} = req.params;
+    const {text} = req.body;
+
+    if(!subTaskId || !text) return res.status(400).json({success:false, error:"All fields are required."});
+    try{
+        const subTask = await subTaskModel.findById(subTaskId);
+        if(!subTask) return res.status(404).json({success:false, message:"Sub Task not found."});
+        const comment = await taskCommentModel.create({
+            userId:req.user.id,
+            subTaskId,
+            comment:text
+        });
+        subTask.comments.push(comment._id);
+        await subTask.save();
+        return res.status(201).json({success:true, message:"Comment added", comment});
+    }catch(err){
+        console.error(err.message);
+        return res.status(500).json({success:false, error:"Internal Server error"});
+    }
+}
+
+// Add files to task
+module.exports.uploadFile = async (req, res)=>{
+    const {subTaskId} = req.params;
+    if(!subTaskId) return res.status(400).json({success:false, error:"Sub Task not found"});
+    try{
+        const subTask = await subTaskModel.findById(subTaskId);
+        if(!subTask) return res.status(404).json({success:false, error:"No Sub Task found"});
+        if(!req.file) return res.status(400).json({success:false, error:"No file uploaded"});
+        const fileData = {
+            userId:req.user.id,
+            subTaskId,
+            filename:req.file.originalname,
+            url:req.file.path,
+            resourceType: req.file.resource_type,
+        }
+        const savedFile = await taskFileModel.create(fileData);
+        subTask.files.push(savedFile._id);
+        await subTask.save();
+        return res.status(200).json({success:true, message:"File uploaded.", file:savedFile});
+    }catch(err){
+        console.error(`Error uploading file.`);
+        return res.status(500).json({success:false, error:"Internal Server Error"});
     }
 }
