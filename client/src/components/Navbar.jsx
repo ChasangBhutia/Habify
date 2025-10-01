@@ -19,7 +19,7 @@ const Navbar = ({ section, setIsTaskFormOpen, setIsHabitFormOpen }) => {
   const weekdayDate = fullDate; // Same as fullDate for simplicity
 
   return (
-    <nav className="w-full bg-white text-black h-full rounded-xl flex items-center justify-between px-3">
+    <nav className="w-full bg-white text-black h-full flex items-center justify-between px-5 rounded-tr-xl">
       <h1 className="text-xl poppins">{navHeading}</h1>
       <div className="flex gap-5 items-center">
         {section === 'task-manager' && (

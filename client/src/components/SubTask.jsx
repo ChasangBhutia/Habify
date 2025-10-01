@@ -85,6 +85,7 @@ const SubTask = ({ task, st }) => {
                         <button className='flex text-sm items-center gap-1'>
                             <ChatBubbleOutlineIcon />
                             <span>{st.comments?.length}</span>
+
                         </button>
                         <button onClick={() => handleMenuToggle(st._id)}><MoreVertIcon /></button>
                         <ul

@@ -11,8 +11,8 @@ const Home = () => {
 
 
   return (
-    <div className='bg-gray-200 bgContainer'>
-      <div className="max-w-[1500px] mx-auto grid gap-2 p-3 grid-cols-[280px_1fr] grid-rows-[60px_1fr] h-screen ">
+    <div className='w-full bg-gray-100 h-screen flex items-center justify-center'>
+      <div className="w-full max-w-[1500px] h-[98%] min-w-[800px] m-auto grid grid-cols-[280px_1fr] grid-rows-[60px_1fr]">
         {/* Sidebar */}
         <aside className=" row-span-3">
           <SideMenu />
