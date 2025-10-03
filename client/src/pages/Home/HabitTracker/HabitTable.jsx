@@ -26,7 +26,7 @@ const HabitTable = () => {
     }
 
     return (
-        <div className="p-4 bg-white overflow-y-auto w-full rounded-xl text-black relative z-48">
+        <div className="p-4 bg-white overflow-y-auto w-full text-black relative z-48">
             {/* Header Row */}
             <div className='flex overflow-y-auto'>
                 <div>

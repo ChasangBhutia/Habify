@@ -15,7 +15,7 @@ const TaskWorkspace = ({ task }) => {
   return (
     <div className='flex gap-2 h-full'>
       <div className='w-2/3'>
-        <TaskArea task={task} setIsOpen={setIsSubTaskFromOpen} />
+        <TaskArea task={task} setIsOpen={setIsSubTaskFromOpen} setIsSearchFormOpen={setIsSearchFormOpen}/>
       </div>
       {task.type === 'Group' ?
         <div className='w-1/3 flex flex-col gap-2'>

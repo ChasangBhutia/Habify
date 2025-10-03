@@ -21,14 +21,16 @@ const HabitHeader = () => {
 
 
     return (
-        <header className='bg-white rounded-xl p-3 w-full text-black'>
+        <header className='bg-white p-3 w-full text-black'>
             <h3 className='poppins text-3xl'>{weekRange}</h3>
-            <input className='w-full mt-3 accent-blue-500' readOnly min="0" max="100" type="range" value={weekScore} />
+            <div className='bg-zinc-200 h-[6px] w-full rounded mt-4 mb-2'>
+                <div style={{width:`${weekScore}%`}} className='h-[6px] bg-zinc-700 rounded'></div>
+            </div>
             <div className='flex justify-between items-center'>
-                <div className='flex items-center gap-2 bg-gray-300 w-[fit-content] p-1 rounded-3xl relative'>
+                <div className='flex items-center gap-2 bg-gray-200 w-[fit-content] p-1 rounded-3xl relative'>
                     <div className={`${weekOrMonth === 'month' && 'ml-27'} duration-300 bg-blue-400 fixed w-25 h-10 rounded-3xl z-49`}></div>
-                    <button className={`${weekOrMonth === 'week' && 'text-white'} w-25 h-10 rounded-3xl relative z-50`} onClick={() => setWeekOrMonth('week')}>Week</button>
-                    <button className={`${weekOrMonth === 'month' && 'text-white'} w-25 h-10 rounded-3xl relative z-50`} onClick={() => setWeekOrMonth('month')}>Month</button>
+                    <button className={`${weekOrMonth === 'week' && 'text-white'} w-25 h-10 rounded-3xl relative z-50 poppins`} onClick={() => setWeekOrMonth('week')}>Week</button>
+                    <button className={`${weekOrMonth === 'month' && 'text-white'} w-25 h-10 rounded-3xl relative z-50 poppins`} onClick={() => setWeekOrMonth('month')}>Month</button>
                 </div>
                 <div className='flex flex-col items-end'>
                     <p>{weekScore}% achieved</p>

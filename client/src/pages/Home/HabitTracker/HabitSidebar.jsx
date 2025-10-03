@@ -39,9 +39,11 @@ const HabitSidebar = () => {
 
 
     return (
-        <div className='bg-white text-black rounded-xl p-3 w-[27%] h-full'>
+        <div className='bg-white text-black rounded-br-xl p-3 w-[27%] h-full'>
             <h2 className="text-2xl poppins">Today's Score</h2>
-            <input className='w-full' type="range" min="0" max="100" value={todayScore} />
+            <div className='bg-zinc-200 h-[6px] w-full rounded mt-4 mb-2'>
+                <div style={{width:`${todayScore}%`}} className='h-[6px] bg-zinc-700 rounded'></div>
+            </div>
             <p>{todayScore}% of daily goal achieved</p>
             <div className='overflow-y-auto max-h-[70vh] mt-4'>
                 {filteredHabits.map(habit => (

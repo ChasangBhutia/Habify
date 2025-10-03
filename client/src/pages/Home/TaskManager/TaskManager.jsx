@@ -25,7 +25,7 @@ const TaskManager = () => {
                     columnClassName="bg-transparent px-2"
                 >
                     {tasks.map(task => (
-                        <TaskCard key={task._id} id={task._id} title={task.title} priority={task.priority} type={task.type} collaborators={task.collaborators} owner={task.owner} description={task.description} content="dfs" />
+                        <TaskCard key={task._id} subTasks={task.subTasks} id={task._id} title={task.title} priority={task.priority} type={task.type} collaborators={task.collaborators} owner={task.owner} description={task.description} content="dfs" />
                     ))}
                     {collabTasks.map(task => (
                         <TaskCard key={task._id} id={task._id} title={task.title} priority={task.priority} type={task.type} collaborators={task.collaborators} owner={task.owner} description={task.description} content="dfs" />

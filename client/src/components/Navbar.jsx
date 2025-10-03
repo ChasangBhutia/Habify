@@ -1,5 +1,5 @@
 import React from 'react';
-import AddIcon from '@mui/icons-material/Add';
+import { Plus } from 'lucide-react';
 
 const Navbar = ({ section, setIsTaskFormOpen, setIsHabitFormOpen }) => {
 
@@ -19,18 +19,18 @@ const Navbar = ({ section, setIsTaskFormOpen, setIsHabitFormOpen }) => {
   const weekdayDate = fullDate; // Same as fullDate for simplicity
 
   return (
-    <nav className="w-full bg-white text-black h-full flex items-center justify-between px-5 rounded-tr-xl">
+    <nav className="w-full bg-white border-b-3 border-gray-200 text-black h-full flex items-center justify-between px-5 rounded-tr-xl">
       <h1 className="text-xl poppins">{navHeading}</h1>
       <div className="flex gap-5 items-center">
         {section === 'task-manager' && (
-          <button className="bg-blue-500 p-2 text-white rounded hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsTaskFormOpen(true)}>
-            <AddIcon />
+          <button className="bg-blue-500 text-sm p-2 text-white rounded-xl hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsTaskFormOpen(true)}>
+            <Plus width={20}/>
             <p>Create Task</p>
           </button>
         )}
          {section === 'habit-tracker' && (
-          <button className="bg-blue-500 p-2 text-white rounded hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsHabitFormOpen(true)}>
-            <AddIcon />
+          <button className="bg-blue-500 p-2 text-white rounded-xl text-sm hover:bg-blue-700 flex items-center gap-1" onClick={() => setIsHabitFormOpen(true)}>
+            <Plus width={20}/>
             <p>Add Habit</p>
           </button>
         )}

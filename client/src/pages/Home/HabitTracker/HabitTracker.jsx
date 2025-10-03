@@ -5,8 +5,8 @@ import HabitSidebar from './HabitSidebar'
 
 const HabitTracker = () => {
   return (
-    <div className='flex gap-3 w-full h-full'>
-      <div className='flex flex-col gap-3 w-[73%]'>
+    <div className='flex gap-1 w-full h-full'>
+      <div className='flex flex-col gap-1 w-[73%]'>
         <HabitHeader />
         <HabitTable />
       </div>
