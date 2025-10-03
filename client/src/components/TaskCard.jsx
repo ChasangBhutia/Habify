@@ -3,7 +3,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Paperclip, MessageCircle, Loader } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const TaskCard = ({ id, title, owner, description, priority, collaborators, type, subTasks }) => {
+const TaskCard = ({ id, title, owner, description, priority, collaborators, type, subTasks = [] }) => {
 
     const priorityBgColor = priority === 'High' ? 'bg-[#FF4C4C]' : priority === 'Med' ? 'bg-[#FFA500]' : 'bg-[#4CAF50]';
     const typeBgColor = type === 'Single' ? 'bg-[#2196F3]' : 'bg-[#9C27B0]';
