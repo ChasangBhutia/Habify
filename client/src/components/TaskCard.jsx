@@ -8,7 +8,7 @@ const TaskCard = ({ id, title, owner, description, priority, collaborators, type
     const priorityBgColor = priority === 'High' ? 'bg-[#FF4C4C]' : priority === 'Med' ? 'bg-[#FFA500]' : 'bg-[#4CAF50]';
     const typeBgColor = type === 'Single' ? 'bg-[#2196F3]' : 'bg-[#9C27B0]';
 
-    const doneSubTasks = subTasks.filter(s => s.done);
+    const doneSubTasks = subTasks.length > 0 ? subTasks.filter(s => s.done) : 0;
     const progress = subTasks.length > 0 ? (doneSubTasks.length / subTasks.length) * 100 : 0;
     
 
